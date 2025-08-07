@@ -199,6 +199,10 @@
             {
               "key": "SelectedRescheduleAppointmentNewExepertId",
               "value": ""
+            },
+            {
+              "key": "allowedCities",
+              "value": "bogotá, medellín, cali, barranquilla, bucaramanga, boyacá, pereira, villavicencio, ibagué, cartagena, chía, cota, cajicá, palmira, jamundí, santa marta"
             }
           ],
           "startPersistState": true
@@ -501,18 +505,18 @@
           "llmMessages": [
             {
               "role": "system",
-              "content": "<pre><code class=\"language-yaml\">You are a supervisor tasked with managing a conversation between the following workers:\n\n  - GREETING: Handles initial greetings and presents service options\n  - SAC: Handles complaints, claims, and customer service issues (HIGHEST PRIORITY)\n  - PRICE: Provides pricing information and service costs\n  - RESCHEDULE: Manages rescheduling of existing services\n  - SERVICE: Manages service booking and purchase process\n\nGiven the following user request, respond with the worker to act next.\n\nEach worker will perform a task and respond with their results and status.\n\nWhen finished, respond with FINISH.\n\nSelect strategically to minimize the number of steps taken.</code></pre>"
+              "content": "<pre><code class=\"language-yaml\">You are a supervisor tasked with managing a conversation between the following workers:\n\n  - GREETING: Handles initial greetings and presents service options\n  - SAC: Handles complaints, claims, and customer service issues (HIGHEST PRIORITY)\n  - INFO: Provides company information, services details, and coverage areas\n  - PRICE: Provides pricing information and service costs\n  - RESCHEDULE: Manages rescheduling of existing services\n  - SERVICE: Manages service booking and purchase process\n\nGiven the following user request, respond with the worker to act next.\n\nEach worker will perform a task and respond with their results and status.\n\nWhen finished, respond with FINISH.\n\nSelect strategically to minimize the number of steps taken.</code></pre><p></p>"
             }
           ],
           "llmEnableMemory": true,
           "llmMemoryType": "allMessages",
-          "llmUserMessage": "<p>Given the conversation above, who should act next? Or should we FINISH? Select one of: GREETING, SAC, PRICE, RESCHEDULE, SERVICE</p>",
+          "llmUserMessage": "<p>Given the conversation above, who should act next? Or should we FINISH? Select one of: GREETING, SAC,INFO, PRICE, RESCHEDULE, SERVICE</p>",
           "llmReturnResponseAs": "userMessage",
           "llmStructuredOutput": [
             {
               "key": "next",
               "type": "enum",
-              "enumValues": "GREETING, SAC, PRICE, RESCHEDULE, SERVICE",
+              "enumValues": "GREETING, SAC, INFO, PRICE, RESCHEDULE, SERVICE",
               "jsonSchema": "",
               "description": "Next agent based on current context and conversation state"
             },
@@ -892,6 +896,18 @@
               "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
               "operation": "equal",
               "value2": "<p>RESCHEDULE</p>"
+            },
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span> </p>",
+              "operation": "equal",
+              "value2": "<p>INFO</p>"
+            },
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span> </p>",
+              "operation": "equal",
+              "value2": "<p>SERVICE</p>"
             }
           ]
         },
@@ -924,6 +940,18 @@
             "id": "conditionAgentflow_0-output-4",
             "label": 4,
             "name": 4,
+            "description": "Condition 4"
+          },
+          {
+            "id": "conditionAgentflow_0-output-5",
+            "label": 5,
+            "name": 5,
+            "description": "Condition 5"
+          },
+          {
+            "id": "conditionAgentflow_0-output-6",
+            "label": 6,
+            "name": 6,
             "description": "Else"
           }
         ],
@@ -934,7 +962,7 @@
       },
       "type": "agentFlow",
       "width": 198,
-      "height": 140,
+      "height": 180,
       "selected": false,
       "positionAbsolute": {
         "x": -3.848472844743,
@@ -945,8 +973,8 @@
     {
       "id": "agentAgentflow_0",
       "position": {
-        "x": 257.0768014200238,
-        "y": -207.92275943419784
+        "x": 257.0153953278047,
+        "y": -329.79946144690837
       },
       "data": {
         "id": "agentAgentflow_0",
@@ -1305,15 +1333,15 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 257.0768014200238,
-        "y": -207.92275943419784
+        "x": 257.0153953278047,
+        "y": -329.79946144690837
       }
     },
     {
       "id": "agentAgentflow_1",
       "position": {
-        "x": 246.86754717102718,
-        "y": -98.88743428185536
+        "x": 254.8244048305624,
+        "y": -238.79551479535004
       },
       "data": {
         "id": "agentAgentflow_1",
@@ -1610,7 +1638,7 @@
           "agentMessages": [
             {
               "role": "system",
-              "content": "Eres el agente de consulta de precios de Casalimpia. Tu proceso:\n\n1. Detecta o solicita ciudad del usuario\n2. Valida ciudad en lista de 16 soportadas\n3. Si ciudad no soportada, ofrece alternativas\n4. Usa get_services con include_prices=True\n5. Muestra precios formateados para WhatsApp\n6. Pregunta si desea contratar algún servicio\n\nCiudades soportadas: BOGOTA, MEDELLIN, CALI, BARRANQUILLA, BUCARAMANGA, PEREIRA, IBAGUE, BOYACA, VILLAVICENCIO, CARTAGENA, SANTA MARTA, CHIA, COTA, CAJICA, PALMIRA, JAMUNDI\n\nFormato: *Precios para [Ciudad]*\n• [Servicio]: $[Precio] COP\n¿Te interesa contratar alguno? 🧹✨"
+              "content": "<p>Eres el agente de consultas de precios de Casalimpia.</p><p><strong>CONTEXTO ACTUAL:</strong></p><p>- Ciudad seleccionada: <span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.selectedCity\" data-label=\"$flow.state.selectedCity\">{{ $flow.state.selectedCity }}</span><br>- Ciudades Permitidas: <span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.allowedCities\" data-label=\"$flow.state.allowedCities\">{{ $flow.state.allowedCities }}</span> </p><p><strong>INSTRUCCIONES:</strong></p><p>1. Si hay ciudad seleccionada: usar esa ciudad para consultar precios directamente</p><p>2. Si no hay ciudad: preguntale la ciudad al usuario</p><p>3. <strong>MOSTRAR PRECIOS</strong>:</p><p>- Usar get_services con include_prices=True</p><p>- Formato WhatsApp:</p><p>💰 Precios para [CIUDAD]</p><p>• Jornada Mañana (4 horas): $XXX,XXX COP</p><p>• Jornada Completa (8 horas): $XXX,XXX COP</p><p>¿Te interesa contratar alguno? 🧹✨</p>"
             }
           ],
           "agentTools": [
@@ -1671,15 +1699,15 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 246.86754717102718,
-        "y": -98.88743428185536
+        "x": 254.8244048305624,
+        "y": -238.79551479535004
       }
     },
     {
       "id": "agentAgentflow_2",
       "position": {
-        "x": 237.28418275843046,
-        "y": 163.35597545702745
+        "x": 255.12317000925282,
+        "y": 98.29613960108716
       },
       "data": {
         "id": "agentAgentflow_2",
@@ -2060,7 +2088,8 @@
             "allowImageUploads": "",
             "reasoningEffort": "medium",
             "agentModel": "chatOpenAI"
-          }
+          },
+          "undefined": ""
         },
         "outputAnchors": [
           {
@@ -2078,15 +2107,15 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 237.28418275843046,
-        "y": 163.35597545702745
+        "x": 255.12317000925282,
+        "y": 98.29613960108716
       }
     },
     {
       "id": "agentAgentflow_3",
       "position": {
-        "x": 521.3191085762941,
-        "y": 192.28608685016417
+        "x": 545.4542089744655,
+        "y": 97.84438963992824
       },
       "data": {
         "id": "agentAgentflow_3",
@@ -2472,15 +2501,15 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 521.3191085762941,
-        "y": 192.28608685016417
+        "x": 545.4542089744655,
+        "y": 97.84438963992824
       }
     },
     {
       "id": "rescheduleAgentAgentflow_0",
       "position": {
-        "x": 239.26344462458968,
-        "y": 32.25386632751466
+        "x": 253.85101700040428,
+        "y": -116.93721478877113
       },
       "data": {
         "id": "rescheduleAgentAgentflow_0",
@@ -2866,15 +2895,15 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 239.26344462458968,
-        "y": 32.25386632751466
+        "x": 253.85101700040428,
+        "y": -116.93721478877113
       }
     },
     {
       "id": "directReplyAgentflow_0",
       "position": {
-        "x": 250,
-        "y": -320
+        "x": 255.60306919944935,
+        "y": -411.4342381221819
       },
       "data": {
         "id": "directReplyAgentflow_0",
@@ -2901,7 +2930,7 @@
         ],
         "inputAnchors": [],
         "inputs": {
-          "directReplyMessage": "¡Hola! 👋 Bienvenido a *Casalimpia* 🧹\n\n¿En qué puedo ayudarte hoy?\n\n• 💰 *Consultar precios*\n• 🛒 *Contratar servicio*\n• 📅 *Reagendar cita*\n• 🆘 *Reportar problema*\n\n¡Estoy aquí para ayudarte! ✨"
+          "directReplyMessage": "<p>¡Hola! 👋 Bienvenido a *Casalimpia* 🧹 ¿En qué puedo ayudarte hoy?</p><p>• 💰 *Consultar precios* </p><p>• 🛒 *Contratar servicio* </p><p>• 📅 *Reagendar cita* </p><p>• 🆘 *Reportar problema* </p><p></p><p>¡Estoy aquí para ayudarte! ✨</p>"
         },
         "outputAnchors": [
           {
@@ -2919,8 +2948,369 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 250,
-        "y": -320
+        "x": 255.60306919944935,
+        "y": -411.4342381221819
+      }
+    },
+    {
+      "id": "agentAgentflow_4",
+      "position": {
+        "x": 256.4677991314267,
+        "y": 4.91473567577799
+      },
+      "data": {
+        "id": "agentAgentflow_4",
+        "label": "INFO_Agent",
+        "version": 1,
+        "name": "agentAgentflow",
+        "type": "Agent",
+        "color": "#4DD0E1",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Agent Flows",
+        "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "agentModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "agentAgentflow_4-input-agentModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "agentMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  },
+                  {
+                    "label": "Assistant",
+                    "name": "assistant"
+                  },
+                  {
+                    "label": "Developer",
+                    "name": "developer"
+                  },
+                  {
+                    "label": "User",
+                    "name": "user"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "generateInstruction": true,
+                "rows": 4
+              }
+            ],
+            "id": "agentAgentflow_4-input-agentMessages-array",
+            "display": true
+          },
+          {
+            "label": "Tools",
+            "name": "agentTools",
+            "type": "array",
+            "optional": true,
+            "array": [
+              {
+                "label": "Tool",
+                "name": "agentSelectedTool",
+                "type": "asyncOptions",
+                "loadMethod": "listTools",
+                "loadConfig": true
+              },
+              {
+                "label": "Require Human Input",
+                "name": "agentSelectedToolRequiresHumanInput",
+                "type": "boolean",
+                "optional": true
+              }
+            ],
+            "id": "agentAgentflow_4-input-agentTools-array",
+            "display": true
+          },
+          {
+            "label": "Knowledge (Document Stores)",
+            "name": "agentKnowledgeDocumentStores",
+            "type": "array",
+            "description": "Give your agent context about different document sources. Document stores must be upserted in advance.",
+            "array": [
+              {
+                "label": "Document Store",
+                "name": "documentStore",
+                "type": "asyncOptions",
+                "loadMethod": "listStores"
+              },
+              {
+                "label": "Describe Knowledge",
+                "name": "docStoreDescription",
+                "type": "string",
+                "generateDocStoreDescription": true,
+                "placeholder": "Describe what the knowledge base is about, this is useful for the AI to know when and how to search for correct information",
+                "rows": 4
+              },
+              {
+                "label": "Return Source Documents",
+                "name": "returnSourceDocuments",
+                "type": "boolean",
+                "optional": true
+              }
+            ],
+            "optional": true,
+            "id": "agentAgentflow_4-input-agentKnowledgeDocumentStores-array",
+            "display": true
+          },
+          {
+            "label": "Knowledge (Vector Embeddings)",
+            "name": "agentKnowledgeVSEmbeddings",
+            "type": "array",
+            "description": "Give your agent context about different document sources from existing vector stores and embeddings",
+            "array": [
+              {
+                "label": "Vector Store",
+                "name": "vectorStore",
+                "type": "asyncOptions",
+                "loadMethod": "listVectorStores",
+                "loadConfig": true
+              },
+              {
+                "label": "Embedding Model",
+                "name": "embeddingModel",
+                "type": "asyncOptions",
+                "loadMethod": "listEmbeddings",
+                "loadConfig": true
+              },
+              {
+                "label": "Knowledge Name",
+                "name": "knowledgeName",
+                "type": "string",
+                "placeholder": "A short name for the knowledge base, this is useful for the AI to know when and how to search for correct information"
+              },
+              {
+                "label": "Describe Knowledge",
+                "name": "knowledgeDescription",
+                "type": "string",
+                "placeholder": "Describe what the knowledge base is about, this is useful for the AI to know when and how to search for correct information",
+                "rows": 4
+              },
+              {
+                "label": "Return Source Documents",
+                "name": "returnSourceDocuments",
+                "type": "boolean",
+                "optional": true
+              }
+            ],
+            "optional": true,
+            "id": "agentAgentflow_4-input-agentKnowledgeVSEmbeddings-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "agentEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "agentAgentflow_4-input-agentEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Memory Type",
+            "name": "agentMemoryType",
+            "type": "options",
+            "options": [
+              {
+                "label": "All Messages",
+                "name": "allMessages",
+                "description": "Retrieve all messages from the conversation"
+              },
+              {
+                "label": "Window Size",
+                "name": "windowSize",
+                "description": "Uses a fixed window size to surface the last N messages"
+              },
+              {
+                "label": "Conversation Summary",
+                "name": "conversationSummary",
+                "description": "Summarizes the whole conversation"
+              },
+              {
+                "label": "Conversation Summary Buffer",
+                "name": "conversationSummaryBuffer",
+                "description": "Summarize conversations once token limit is reached. Default to 2000"
+              }
+            ],
+            "optional": true,
+            "default": "allMessages",
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "agentAgentflow_4-input-agentMemoryType-options",
+            "display": true
+          },
+          {
+            "label": "Window Size",
+            "name": "agentMemoryWindowSize",
+            "type": "number",
+            "default": "20",
+            "description": "Uses a fixed window size to surface the last N messages",
+            "show": {
+              "agentMemoryType": "windowSize"
+            },
+            "id": "agentAgentflow_4-input-agentMemoryWindowSize-number",
+            "display": false
+          },
+          {
+            "label": "Max Token Limit",
+            "name": "agentMemoryMaxTokenLimit",
+            "type": "number",
+            "default": "2000",
+            "description": "Summarize conversations once token limit is reached. Default to 2000",
+            "show": {
+              "agentMemoryType": "conversationSummaryBuffer"
+            },
+            "id": "agentAgentflow_4-input-agentMemoryMaxTokenLimit-number",
+            "display": false
+          },
+          {
+            "label": "Input Message",
+            "name": "agentUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "agentAgentflow_4-input-agentUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "agentReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              },
+              {
+                "label": "Assistant Message",
+                "name": "assistantMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "agentAgentflow_4-input-agentReturnResponseAs-options",
+            "display": true
+          },
+          {
+            "label": "Update Flow State",
+            "name": "agentUpdateState",
+            "description": "Update runtime state during the execution of the workflow",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Key",
+                "name": "key",
+                "type": "asyncOptions",
+                "loadMethod": "listRuntimeStateKeys",
+                "freeSolo": true
+              },
+              {
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "acceptVariable": true,
+                "acceptNodeOutputAsVariable": true
+              }
+            ],
+            "id": "agentAgentflow_4-input-agentUpdateState-array",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "agentModel": "chatOpenAI",
+          "agentMessages": [
+            {
+              "role": "system",
+              "content": "<p>Eres el agente de información comercial de Casalimpia. Tu función es proporcionar información factual sobre la empresa y servicios.</p><p><strong>INSTRUCCIONES:</strong></p><p>1. <strong>ANALIZAR PREGUNTA</strong>: Identifica qué tipo de información específica busca el usuario</p><p>2. <strong>PROPORCIONAR INFORMACIÓN</strong>:</p><p>- Da información factual y precisa</p><p>- NO hagas recomendaciones</p><p>- NO presiones para vender</p><p>- Usa formato claro para WhatsApp</p><p>3. <strong>INFORMACIÓN BÁSICA DISPONIBLE:</strong></p><p>- Ciudades: <span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.allowedCities\" data-label=\"$flow.state.allowedCities\">{{ $flow.state.allowedCities }}</span></p><p>- Horarios: 8-6-4 horas (mañana 8AM-12PM, tarde 2PM-6PM, completa 8AM-5PM)</p><p>- Servicios: Limpieza residencial profesional</p><p> 4. <strong>TRANSICIÓN NATURAL</strong>: Después de responder, evalúa si el usuario podría estar interesado en el siguiente paso y haz una transición natural hacia precios o contratación</p><p>  según el contexto de la conversación.</p><p>5. <strong>SI NO SABES</strong>: \"Para esa consulta específica te recomiendo contactar directamente: https://wa.me/573012926214\"</p>"
+            }
+          ],
+          "agentTools": "",
+          "agentKnowledgeDocumentStores": [
+            {
+              "documentStore": "b33304b1-6c86-473d-b648-cbb925bb63f0:CasaLimpia",
+              "docStoreDescription": "  Base de conocimiento de Casalimpia que contiene información empresarial y comercial sobre servicios de limpieza residencial profesional. Incluye detalles\n  sobre:\n\n  - Información de la empresa (qué es Casalimpia, misión, valores)\n  - Servicios disponibles (tipos de limpieza, jornadas, qué incluye/excluye)\n  - Cobertura geográfica (16 ciudades colombianas donde opera)\n  - Horarios y modalidades de trabajo (jornadas de 3, 4, 6 y 8 horas)\n  - Proceso de contratación y funcionamiento del servicio\n  - Políticas y términos de servicio\n  - Preguntas frecuentes sobre el servicio\n\n  Esta base se usa para responder consultas informativas de clientes potenciales que buscan entender el servicio antes de contratar, sin incluir precios\n  específicos ni información de citas existentes.",
+              "returnSourceDocuments": true
+            }
+          ],
+          "agentKnowledgeVSEmbeddings": [],
+          "agentEnableMemory": true,
+          "agentMemoryType": "allMessages",
+          "agentMemoryWindowSize": "20",
+          "agentMemoryMaxTokenLimit": "2000",
+          "agentUserMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.instruction\" data-label=\"$flow.state.instruction\">{{ $flow.state.instruction }}</span> </p>",
+          "agentReturnResponseAs": "userMessage",
+          "agentUpdateState": [],
+          "agentModelConfig": {
+            "cache": "",
+            "modelName": "gpt-4.1-nano",
+            "temperature": 0.9,
+            "streaming": true,
+            "maxTokens": "",
+            "topP": "",
+            "frequencyPenalty": "",
+            "presencePenalty": "",
+            "timeout": "",
+            "strictToolCalling": "",
+            "stopSequence": "",
+            "basepath": "",
+            "proxyUrl": "",
+            "baseOptions": "",
+            "allowImageUploads": "",
+            "reasoningEffort": "medium",
+            "agentModel": "chatOpenAI"
+          },
+          "undefined": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "agentAgentflow_4-output-agentAgentflow",
+            "label": "Agent",
+            "name": "agentAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 179,
+      "height": 72,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 256.4677991314267,
+        "y": 4.91473567577799
       }
     }
   ],
@@ -3008,20 +3398,6 @@
       "id": "conditionAgentflow_0-conditionAgentflow_0-output-3-rescheduleAgentAgentflow_0-rescheduleAgentAgentflow_0"
     },
     {
-      "source": "conditionAgentflow_0",
-      "sourceHandle": "conditionAgentflow_0-output-4",
-      "target": "agentAgentflow_2",
-      "targetHandle": "agentAgentflow_2",
-      "data": {
-        "sourceColor": "#FFB938",
-        "targetColor": "#4DD0E1",
-        "edgeLabel": "4",
-        "isHumanInput": false
-      },
-      "type": "agentFlow",
-      "id": "conditionAgentflow_0-conditionAgentflow_0-output-4-agentAgentflow_2-agentAgentflow_2"
-    },
-    {
       "source": "agentAgentflow_2",
       "sourceHandle": "agentAgentflow_2-output-agentAgentflow",
       "target": "agentAgentflow_3",
@@ -3033,6 +3409,34 @@
       },
       "type": "agentFlow",
       "id": "agentAgentflow_2-agentAgentflow_2-output-agentAgentflow-agentAgentflow_3-agentAgentflow_3"
+    },
+    {
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-4",
+      "target": "agentAgentflow_4",
+      "targetHandle": "agentAgentflow_4",
+      "data": {
+        "sourceColor": "#FFB938",
+        "targetColor": "#4DD0E1",
+        "edgeLabel": "4",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-4-agentAgentflow_4-agentAgentflow_4"
+    },
+    {
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-5",
+      "target": "agentAgentflow_2",
+      "targetHandle": "agentAgentflow_2",
+      "data": {
+        "sourceColor": "#FFB938",
+        "targetColor": "#4DD0E1",
+        "edgeLabel": "5",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-5-agentAgentflow_2-agentAgentflow_2"
     }
   ]
 }
