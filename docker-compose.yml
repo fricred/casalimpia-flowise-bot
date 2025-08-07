@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  flowise:
+    image: flowiseai/flowise:latest
+    restart: always
+    environment:
+      - PORT=3000
+      # PostgreSQL configuration for production
+      - DATABASE_TYPE=postgres
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=casalimpia_flowise
+      - DATABASE_USER=flowise
+      - DATABASE_PASSWORD=casalimpia_secure_2024
+      # Redis configuration for memory/sessions
+      - REDIS_URL=redis://redis:6379
+      # Storage paths
+      - APIKEY_PATH=/root/.flowise
+      - SECRETKEY_PATH=/root/.flowise
+      - LOG_PATH=/root/.flowise/logs
+      - BLOB_STORAGE_PATH=/root/.flowise/storage
+      # Debug and logging
+      - DEBUG=true
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+      # Authentication
+      - FLOWISE_USERNAME=admin
+      - FLOWISE_PASSWORD=casalimpia123
+    ports:
+      - "3000:3000"
+    volumes:
+      - flowise_data:/root/.flowise
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - flowise_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    entrypoint: /bin/sh -c "sleep 5; flowise start"
+
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=casalimpia_flowise
+      - POSTGRES_USER=flowise
+      - POSTGRES_PASSWORD=casalimpia_secure_2024
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - flowise_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flowise -d casalimpia_flowise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - flowise_network
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  flowise_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  flowise_data:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

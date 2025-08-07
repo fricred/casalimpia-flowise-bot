@@ -1,0 +1,1232 @@
+{
+  "nodes": [
+    {
+      "id": "startAgentflow_0",
+      "type": "agentFlow",
+      "position": {
+        "x": -200,
+        "y": 100
+      },
+      "data": {
+        "id": "startAgentflow_0",
+        "label": "Start",
+        "version": 1.1,
+        "name": "startAgentflow",
+        "type": "Start",
+        "color": "#7EE787",
+        "hideInput": true,
+        "baseClasses": [
+          "Start"
+        ],
+        "category": "Agent Flows",
+        "description": "Starting point of the agentflow",
+        "inputParams": [
+          {
+            "label": "Input Type",
+            "name": "startInputType",
+            "type": "options",
+            "options": [
+              {
+                "label": "Chat Input",
+                "name": "chatInput",
+                "description": "Start the conversation with chat input"
+              }
+            ],
+            "default": "chatInput",
+            "id": "startAgentflow_0-input-startInputType-options",
+            "display": true
+          },
+          {
+            "label": "Ephemeral Memory",
+            "name": "startEphemeralMemory",
+            "type": "boolean",
+            "description": "Start fresh for every execution without past chat history",
+            "optional": true,
+            "id": "startAgentflow_0-input-startEphemeralMemory-boolean",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "startInputType": "chatInput",
+          "startEphemeralMemory": false
+        },
+        "outputAnchors": [
+          {
+            "id": "startAgentflow_0-output-startAgentflow",
+            "label": "Start",
+            "name": "startAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 181,
+      "height": 66,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -200,
+        "y": 100
+      },
+      "dragging": false
+    },
+    {
+      "id": "supervisorLLM_0",
+      "position": {
+        "x": 50,
+        "y": 50
+      },
+      "data": {
+        "id": "supervisorLLM_0",
+        "label": "Casalimpia_Supervisor",
+        "version": 1,
+        "name": "llmAgentflow",
+        "type": "LLM",
+        "color": "#ff6b9d",
+        "baseClasses": [
+          "LLM"
+        ],
+        "category": "Agent Flows",
+        "description": "Use LLM to process and respond to user input",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "llmModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "supervisorLLM_0-input-llmModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "llmMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  },
+                  {
+                    "label": "Assistant",
+                    "name": "assistant"
+                  },
+                  {
+                    "label": "User",
+                    "name": "user"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4
+              }
+            ],
+            "id": "supervisorLLM_0-input-llmMessages-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "llmEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "supervisorLLM_0-input-llmEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Memory Type",
+            "name": "llmMemoryType",
+            "type": "options",
+            "options": [
+              {
+                "label": "All Messages",
+                "name": "allMessages",
+                "description": "Retrieve all messages from the conversation"
+              },
+              {
+                "label": "Window Size",
+                "name": "windowSize",
+                "description": "Uses a fixed window size to surface the last N messages"
+              }
+            ],
+            "optional": true,
+            "default": "allMessages",
+            "show": {
+              "llmEnableMemory": true
+            },
+            "id": "supervisorLLM_0-input-llmMemoryType-options",
+            "display": true
+          },
+          {
+            "label": "Input Message",
+            "name": "llmUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "llmEnableMemory": true
+            },
+            "id": "supervisorLLM_0-input-llmUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "llmReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              },
+              {
+                "label": "Assistant Message",
+                "name": "assistantMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "supervisorLLM_0-input-llmReturnResponseAs-options",
+            "display": true
+          },
+          {
+            "label": "Structured Output",
+            "name": "llmStructuredOutput",
+            "description": "Define the structure of the output",
+            "type": "array",
+            "optional": true,
+            "array": [
+              {
+                "label": "Key",
+                "name": "key",
+                "type": "string",
+                "placeholder": "property_name"
+              },
+              {
+                "label": "Type",
+                "name": "type",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "String",
+                    "name": "string"
+                  },
+                  {
+                    "label": "Number",
+                    "name": "number"
+                  },
+                  {
+                    "label": "Boolean",
+                    "name": "boolean"
+                  },
+                  {
+                    "label": "Enum",
+                    "name": "enum"
+                  }
+                ],
+                "default": "string"
+              },
+              {
+                "label": "Enum Values",
+                "name": "enumValues",
+                "type": "string",
+                "placeholder": "value1, value2, value3",
+                "show": {
+                  "llmStructuredOutput[$index].type": "enum"
+                }
+              },
+              {
+                "label": "Description",
+                "name": "description",
+                "type": "string",
+                "placeholder": "Description of this property"
+              }
+            ],
+            "id": "supervisorLLM_0-input-llmStructuredOutput-array",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "llmModel": "chatOpenAI",
+          "llmMessages": [
+            {
+              "role": "system",
+              "content": "Eres el supervisor de Casalimpia, un servicio de limpieza profesional. Tu trabajo es analizar cada mensaje del usuario y decidir qué especialista debe atenderlo.\n\nEspecialistas disponibles:\n- GREETING: Para saludos simples sin solicitud específica\n- SAC: Para quejas, reclamos, problemas, reembolsos (MÁXIMA PRIORIDAD)\n- PRICE: Para consultas de precios, costos, tarifas\n- RESCHEDULE: Para reagendar o cambiar servicios existentes\n- SERVICE: Para contratar servicios nuevos o consultas generales\n\nSiempre incluye instrucciones específicas para el especialista sobre qué debe hacer con la información del contexto de la conversación.\n\nFormato de respuesta: Selecciona SOLO uno de los especialistas y proporciona instrucciones claras."
+            }
+          ],
+          "llmEnableMemory": true,
+          "llmMemoryType": "allMessages",
+          "llmUserMessage": "Analiza el mensaje del usuario y el contexto de la conversación. ¿Qué especialista debe atender esta solicitud y qué instrucciones específicas necesita?",
+          "llmReturnResponseAs": "userMessage",
+          "llmStructuredOutput": [
+            {
+              "key": "next_agent",
+              "type": "enum",
+              "enumValues": "GREETING, SAC, PRICE, RESCHEDULE, SERVICE",
+              "description": "El especialista que debe atender la solicitud"
+            },
+            {
+              "key": "instructions",
+              "type": "string",
+              "description": "Instrucciones específicas para el especialista basadas en el contexto"
+            }
+          ],
+          "llmModelConfig": {
+            "cache": "",
+            "modelName": "gpt-4o-mini",
+            "temperature": 0.3,
+            "streaming": true,
+            "maxTokens": "",
+            "topP": "",
+            "frequencyPenalty": "",
+            "presencePenalty": "",
+            "timeout": "",
+            "strictToolCalling": "",
+            "stopSequence": "",
+            "basepath": "",
+            "proxyUrl": "",
+            "baseOptions": "",
+            "allowImageUploads": "",
+            "imageResolution": "low",
+            "reasoningEffort": "medium",
+            "llmModel": "chatOpenAI"
+          }
+        },
+        "outputAnchors": [
+          {
+            "id": "supervisorLLM_0-output-0",
+            "label": "Greeting",
+            "name": "llmAgentflow"
+          },
+          {
+            "id": "supervisorLLM_0-output-1",
+            "label": "SAC",
+            "name": "llmAgentflow"
+          },
+          {
+            "id": "supervisorLLM_0-output-2",
+            "label": "Price",
+            "name": "llmAgentflow"
+          },
+          {
+            "id": "supervisorLLM_0-output-3",
+            "label": "Reschedule",
+            "name": "llmAgentflow"
+          },
+          {
+            "id": "supervisorLLM_0-output-4",
+            "label": "Service",
+            "name": "llmAgentflow"
+          }
+        ],
+        "outputs": {
+          "llmAgentflow": ""
+        },
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 200,
+      "height": 120,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 50,
+        "y": 50
+      },
+      "dragging": false
+    },
+    {
+      "id": "directReplyGreeting_0",
+      "position": {
+        "x": 350,
+        "y": -150
+      },
+      "data": {
+        "id": "directReplyGreeting_0",
+        "label": "Greeting_Reply",
+        "version": 1,
+        "name": "directReplyAgentflow",
+        "type": "DirectReply",
+        "color": "#90EE90",
+        "baseClasses": [
+          "DirectReply"
+        ],
+        "category": "Agent Flows",
+        "description": "Return a direct reply without processing by agent",
+        "inputParams": [
+          {
+            "label": "Reply Message",
+            "name": "directReplyMessage",
+            "type": "string",
+            "rows": 4,
+            "acceptVariable": true,
+            "id": "directReplyGreeting_0-input-directReplyMessage-string",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "directReplyMessage": "¡Hola! 👋 Bienvenido a *Casalimpia* 🧹\n\n¿En qué puedo ayudarte hoy?\n\n• 💰 *Consultar precios*\n• 🛒 *Contratar servicio*\n• 📅 *Reagendar cita*\n• 🆘 *Reportar problema*\n\n¡Estoy aquí para ayudarte! ✨"
+        },
+        "outputAnchors": [
+          {
+            "id": "directReplyGreeting_0-output-directReplyAgentflow",
+            "label": "Direct Reply",
+            "name": "directReplyAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 180,
+      "height": 100,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350,
+        "y": -150
+      }
+    },
+    {
+      "id": "sacAgent_0",
+      "position": {
+        "x": 350,
+        "y": -20
+      },
+      "data": {
+        "id": "sacAgent_0",
+        "label": "SAC_Agent",
+        "version": 1,
+        "name": "agentAgentflow",
+        "type": "Agent",
+        "color": "#FF4444",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Agent Flows",
+        "description": "Agent for handling complaints and issues",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "agentModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "sacAgent_0-input-agentModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "agentMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  },
+                  {
+                    "label": "User",
+                    "name": "user"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4
+              }
+            ],
+            "id": "sacAgent_0-input-agentMessages-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "agentEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "sacAgent_0-input-agentEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Memory Type",
+            "name": "agentMemoryType",
+            "type": "options",
+            "options": [
+              {
+                "label": "All Messages",
+                "name": "allMessages"
+              }
+            ],
+            "optional": true,
+            "default": "allMessages",
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "sacAgent_0-input-agentMemoryType-options",
+            "display": true
+          },
+          {
+            "label": "Input Message",
+            "name": "agentUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "sacAgent_0-input-agentUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "agentReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "sacAgent_0-input-agentReturnResponseAs-options",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "agentModel": "chatOpenAI",
+          "agentMessages": [
+            {
+              "role": "system",
+              "content": "Eres el agente SAC (Servicio de Atención al Cliente) de Casalimpia con MÁXIMA PRIORIDAD.\n\nCuando detectes quejas, reclamos, problemas o solicitudes de reembolso:\n\n1. Responde INMEDIATAMENTE con:\n   'Lo siento, no estoy capacitado para responder tu solicitud. Te invito a escribir directamente a nuestra línea de soporte: https://wa.me/573012926214'\n\n2. Usa formato WhatsApp con emojis apropiados\n3. Sé empático y profesional\n4. NO intentes resolver el problema técnico\n5. Deriva SIEMPRE a soporte humano\n\nPalabras clave: no llegó, tarde, mal servicio, reembolso, queja, reclamo, problema, incidente, cancelar."
+            }
+          ],
+          "agentEnableMemory": true,
+          "agentMemoryType": "allMessages",
+          "agentUserMessage": "{{ instructions }}",
+          "agentReturnResponseAs": "userMessage",
+          "agentModelConfig": {
+            "cache": "",
+            "modelName": "gpt-4o-mini",
+            "temperature": 0.7,
+            "streaming": true,
+            "maxTokens": "",
+            "topP": "",
+            "frequencyPenalty": "",
+            "presencePenalty": "",
+            "timeout": "",
+            "basepath": "",
+            "proxyUrl": "",
+            "baseOptions": "",
+            "agentModel": "chatOpenAI"
+          }
+        },
+        "outputAnchors": [
+          {
+            "id": "sacAgent_0-output-agentAgentflow",
+            "label": "Agent",
+            "name": "agentAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 175,
+      "height": 72,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350,
+        "y": -20
+      }
+    },
+    {
+      "id": "priceAgent_0",
+      "position": {
+        "x": 350,
+        "y": 120
+      },
+      "data": {
+        "id": "priceAgent_0",
+        "label": "Price_Agent",
+        "version": 1,
+        "name": "agentAgentflow",
+        "type": "Agent",
+        "color": "#4DD0E1",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Agent Flows",
+        "description": "Agent for price inquiries",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "agentModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "priceAgent_0-input-agentModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "agentMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4
+              }
+            ],
+            "id": "priceAgent_0-input-agentMessages-array",
+            "display": true
+          },
+          {
+            "label": "Tools",
+            "name": "agentTools",
+            "type": "array",
+            "optional": true,
+            "array": [
+              {
+                "label": "Tool",
+                "name": "agentSelectedTool",
+                "type": "asyncOptions",
+                "loadMethod": "listTools",
+                "loadConfig": true
+              }
+            ],
+            "id": "priceAgent_0-input-agentTools-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "agentEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "priceAgent_0-input-agentEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Input Message",
+            "name": "agentUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "priceAgent_0-input-agentUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "agentReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "priceAgent_0-input-agentReturnResponseAs-options",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "agentModel": "chatOpenAI",
+          "agentMessages": [
+            {
+              "role": "system",
+              "content": "Eres el agente de consulta de precios de Casalimpia. Tu trabajo:\n\n1. Si ya tienes la ciudad del contexto, úsala directamente\n2. Si no tienes ciudad, pregunta por ella\n3. Valida que esté en la lista de 16 ciudades soportadas\n4. Usa get_services con include_prices=True\n5. Muestra precios en formato WhatsApp con emojis\n6. Pregunta si desea contratar algún servicio\n\nCiudades soportadas: BOGOTA, MEDELLIN, CALI, BARRANQUILLA, BUCARAMANGA, PEREIRA, IBAGUE, BOYACA, VILLAVICENCIO, CARTAGENA, SANTA MARTA, CHIA, COTA, CAJICA, PALMIRA, JAMUNDI\n\nFormato respuesta:\n*🏙️ Precios para [Ciudad]*\n• 🧹 [Servicio]: $[Precio] COP\n\n¿Te interesa contratar alguno? 💰✨"
+            }
+          ],
+          "agentTools": [
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "67aaa7b6-152f-439b-b4b9-41ef63fd3eb6",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            }
+          ],
+          "agentEnableMemory": true,
+          "agentUserMessage": "{{ instructions }}",
+          "agentReturnResponseAs": "userMessage",
+          "agentModelConfig": {
+            "modelName": "gpt-4o-mini",
+            "temperature": 0.7,
+            "agentModel": "chatOpenAI"
+          }
+        },
+        "outputAnchors": [
+          {
+            "id": "priceAgent_0-output-agentAgentflow",
+            "label": "Agent",
+            "name": "agentAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 175,
+      "height": 100,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350,
+        "y": 120
+      }
+    },
+    {
+      "id": "rescheduleAgent_0",
+      "position": {
+        "x": 350,
+        "y": 250
+      },
+      "data": {
+        "id": "rescheduleAgent_0",
+        "label": "Reschedule_Agent",
+        "version": 1,
+        "name": "agentAgentflow",
+        "type": "Agent",
+        "color": "#4DD0E1",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Agent Flows",
+        "description": "Agent for rescheduling services",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "agentModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "rescheduleAgent_0-input-agentModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "agentMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4
+              }
+            ],
+            "id": "rescheduleAgent_0-input-agentMessages-array",
+            "display": true
+          },
+          {
+            "label": "Tools",
+            "name": "agentTools",
+            "type": "array",
+            "optional": true,
+            "array": [
+              {
+                "label": "Tool",
+                "name": "agentSelectedTool",
+                "type": "asyncOptions",
+                "loadMethod": "listTools",
+                "loadConfig": true
+              }
+            ],
+            "id": "rescheduleAgent_0-input-agentTools-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "agentEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "rescheduleAgent_0-input-agentEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Input Message",
+            "name": "agentUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "rescheduleAgent_0-input-agentUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "agentReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "rescheduleAgent_0-input-agentReturnResponseAs-options",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "agentModel": "chatOpenAI",
+          "agentMessages": [
+            {
+              "role": "system",
+              "content": "Eres el agente de reagendamiento de Casalimpia. Tu proceso:\n\n1. Si no tienes la cédula del contexto, solicítala inmediatamente\n2. Busca servicios existentes con get_sic_customer_packages\n3. Muestra servicios disponibles para reagendar\n4. Identifica qué quiere cambiar: fecha, experta, o ambos\n5. Si cambio de experta, usa get_sic_experts_list\n6. Ejecuta cambios con reschedule_service\n7. Confirma reagendamiento exitoso\n\nSIEMPRE pide cédula primero. NO proceses sin cédula válida.\nUsa formato WhatsApp: 📅 📄 🔄 ✅\n\nProceso completo:\n- Cédula → Buscar servicios → Seleccionar → Cambios → Confirmar"
+            }
+          ],
+          "agentTools": [
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "ed0c7fb8-696f-48cc-98fc-8c11a63ad35d",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "46ac5206-e8bd-464a-a929-b7592aad0e8a",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "1604b4c6-443b-49ca-bec1-d3ed0275bdd7",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            }
+          ],
+          "agentEnableMemory": true,
+          "agentUserMessage": "{{ instructions }}",
+          "agentReturnResponseAs": "userMessage",
+          "agentModelConfig": {
+            "modelName": "gpt-4o-mini",
+            "temperature": 0.7,
+            "agentModel": "chatOpenAI"
+          }
+        },
+        "outputAnchors": [
+          {
+            "id": "rescheduleAgent_0-output-agentAgentflow",
+            "label": "Agent",
+            "name": "agentAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 193,
+      "height": 100,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350,
+        "y": 250
+      }
+    },
+    {
+      "id": "serviceAgent_0",
+      "position": {
+        "x": 350,
+        "y": 380
+      },
+      "data": {
+        "id": "serviceAgent_0",
+        "label": "Service_Manager",
+        "version": 1,
+        "name": "agentAgentflow",
+        "type": "Agent",
+        "color": "#4DD0E1",
+        "baseClasses": [
+          "Agent"
+        ],
+        "category": "Agent Flows",
+        "description": "Agent for service contracting and cart management",
+        "inputParams": [
+          {
+            "label": "Model",
+            "name": "agentModel",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "loadConfig": true,
+            "id": "serviceAgent_0-input-agentModel-asyncOptions",
+            "display": true
+          },
+          {
+            "label": "Messages",
+            "name": "agentMessages",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  }
+                ]
+              },
+              {
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "rows": 4
+              }
+            ],
+            "id": "serviceAgent_0-input-agentMessages-array",
+            "display": true
+          },
+          {
+            "label": "Tools",
+            "name": "agentTools",
+            "type": "array",
+            "optional": true,
+            "array": [
+              {
+                "label": "Tool",
+                "name": "agentSelectedTool",
+                "type": "asyncOptions",
+                "loadMethod": "listTools",
+                "loadConfig": true
+              }
+            ],
+            "id": "serviceAgent_0-input-agentTools-array",
+            "display": true
+          },
+          {
+            "label": "Enable Memory",
+            "name": "agentEnableMemory",
+            "type": "boolean",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
+            "optional": true,
+            "id": "serviceAgent_0-input-agentEnableMemory-boolean",
+            "display": true
+          },
+          {
+            "label": "Input Message",
+            "name": "agentUserMessage",
+            "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
+            "rows": 4,
+            "optional": true,
+            "acceptVariable": true,
+            "show": {
+              "agentEnableMemory": true
+            },
+            "id": "serviceAgent_0-input-agentUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "agentReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "serviceAgent_0-input-agentReturnResponseAs-options",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "agentModel": "chatOpenAI",
+          "agentMessages": [
+            {
+              "role": "system",
+              "content": "Eres el gestor de servicios de Casalimpia. Manejas contratación y carrito.\n\nProceso completo:\n1. Verifica carrito actual con read_service_cart\n2. Extrae/valida ciudad del contexto o pregúntala\n3. Muestra servicios disponibles con get_services\n4. Solicita y valida fecha futura para el servicio\n5. Obtén expertas disponibles con get_sic_experts_list\n6. Confirma toda la selección antes de agregar\n7. Agrega al carrito con create_service_cart_item\n8. Ofrece: agregar más servicios, ver carrito, o proceder al pago\n\nPara finalizar compra:\n9. Solicita email válido del usuario\n10. Genera enlace de pago con generate_payment_link\n11. Confirma envío exitoso\n\nNUNCA muestres campos internos como 'sku' o 'cedula' al usuario.\nUsa formato WhatsApp con emojis: 🧹 🛒 💰 📅 👤 ✨"
+            }
+          ],
+          "agentTools": [
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "78f087ec-310e-4b7f-b317-653c97eb0a36",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "67aaa7b6-152f-439b-b4b9-41ef63fd3eb6",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "78b86203-3f83-4d85-abce-83f25ad099b2",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "6f19af73-f5d3-4fda-8c9b-38477c019256",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            },
+            {
+              "agentSelectedTool": "customTool",
+              "agentSelectedToolRequiresHumanInput": false,
+              "agentSelectedToolConfig": {
+                "selectedTool": "46ac5206-e8bd-464a-a929-b7592aad0e8a",
+                "returnDirect": "",
+                "customToolName": "",
+                "customToolDesc": "",
+                "customToolSchema": "",
+                "customToolFunc": "",
+                "agentSelectedTool": "customTool"
+              }
+            }
+          ],
+          "agentEnableMemory": true,
+          "agentUserMessage": "{{ instructions }}",
+          "agentReturnResponseAs": "userMessage",
+          "agentModelConfig": {
+            "modelName": "gpt-4o-mini",
+            "temperature": 0.7,
+            "agentModel": "chatOpenAI"
+          }
+        },
+        "outputAnchors": [
+          {
+            "id": "serviceAgent_0-output-agentAgentflow",
+            "label": "Agent",
+            "name": "agentAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 175,
+      "height": 100,
+      "selected": false,
+      "dragging": false,
+      "positionAbsolute": {
+        "x": 350,
+        "y": 380
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "startAgentflow_0",
+      "sourceHandle": "startAgentflow_0-output-startAgentflow",
+      "target": "supervisorLLM_0",
+      "targetHandle": "supervisorLLM_0",
+      "data": {
+        "sourceColor": "#7EE787",
+        "targetColor": "#ff6b9d",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "startAgentflow_0-startAgentflow_0-output-startAgentflow-supervisorLLM_0-supervisorLLM_0"
+    },
+    {
+      "source": "supervisorLLM_0",
+      "sourceHandle": "supervisorLLM_0-output-0",
+      "target": "directReplyGreeting_0",
+      "targetHandle": "directReplyGreeting_0",
+      "data": {
+        "sourceColor": "#ff6b9d",
+        "targetColor": "#90EE90",
+        "edgeLabel": "0",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "supervisorLLM_0-supervisorLLM_0-output-0-directReplyGreeting_0-directReplyGreeting_0"
+    },
+    {
+      "source": "supervisorLLM_0",
+      "sourceHandle": "supervisorLLM_0-output-1",
+      "target": "sacAgent_0",
+      "targetHandle": "sacAgent_0",
+      "data": {
+        "sourceColor": "#ff6b9d",
+        "targetColor": "#FF4444",
+        "edgeLabel": "1",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "supervisorLLM_0-supervisorLLM_0-output-1-sacAgent_0-sacAgent_0"
+    },
+    {
+      "source": "supervisorLLM_0",
+      "sourceHandle": "supervisorLLM_0-output-2",
+      "target": "priceAgent_0",
+      "targetHandle": "priceAgent_0",
+      "data": {
+        "sourceColor": "#ff6b9d",
+        "targetColor": "#4DD0E1",
+        "edgeLabel": "2",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "supervisorLLM_0-supervisorLLM_0-output-2-priceAgent_0-priceAgent_0"
+    },
+    {
+      "source": "supervisorLLM_0",
+      "sourceHandle": "supervisorLLM_0-output-3",
+      "target": "rescheduleAgent_0",
+      "targetHandle": "rescheduleAgent_0",
+      "data": {
+        "sourceColor": "#ff6b9d",
+        "targetColor": "#4DD0E1",
+        "edgeLabel": "3",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "supervisorLLM_0-supervisorLLM_0-output-3-rescheduleAgent_0-rescheduleAgent_0"
+    },
+    {
+      "source": "supervisorLLM_0",
+      "sourceHandle": "supervisorLLM_0-output-4",
+      "target": "serviceAgent_0",
+      "targetHandle": "serviceAgent_0",
+      "data": {
+        "sourceColor": "#ff6b9d",
+        "targetColor": "#4DD0E1",
+        "edgeLabel": "4",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "supervisorLLM_0-supervisorLLM_0-output-4-serviceAgent_0-serviceAgent_0"
+    }
+  ]
+}
