@@ -4,8 +4,8 @@
       "id": "startAgentflow_0",
       "type": "agentFlow",
       "position": {
-        "x": -268.5,
-        "y": 41
+        "x": -424.4019104583109,
+        "y": -84.61239642641056
       },
       "data": {
         "id": "startAgentflow_0",
@@ -177,92 +177,28 @@
           "startEphemeralMemory": "",
           "startState": [
             {
-              "key": "conversation_flow",
-              "value": "initial"
-            },
-            {
-              "key": "user_city",
+              "key": "next",
               "value": ""
             },
             {
-              "key": "city_valid",
-              "value": "false"
-            },
-            {
-              "key": "selected_service",
+              "key": "instruction",
               "value": ""
             },
             {
-              "key": "service_sku",
+              "key": "selectedCity",
               "value": ""
             },
             {
-              "key": "service_date",
+              "key": "SelectedRescheduleAppointmentId",
               "value": ""
             },
             {
-              "key": "date_valid",
-              "value": "false"
-            },
-            {
-              "key": "selected_expert",
+              "key": "SelectedRescheduleAppointmentNewDate",
               "value": ""
             },
             {
-              "key": "expert_cedula",
+              "key": "SelectedRescheduleAppointmentNewExepertId",
               "value": ""
-            },
-            {
-              "key": "cart_items",
-              "value": "[]"
-            },
-            {
-              "key": "user_cedula",
-              "value": ""
-            },
-            {
-              "key": "user_email",
-              "value": ""
-            },
-            {
-              "key": "email_valid",
-              "value": "false"
-            },
-            {
-              "key": "current_step",
-              "value": "greeting"
-            },
-            {
-              "key": "flow_type",
-              "value": ""
-            },
-            {
-              "key": "user_intent",
-              "value": ""
-            },
-            {
-              "key": "last_response",
-              "value": ""
-            },
-            {
-              "key": "step_number",
-              "value": "0"
-            },
-            {
-              "key": "validation_errors",
-              "value": "[]"
-            },
-            {
-              "key": "payment_link",
-              "value": ""
-            },
-            {
-              "key": "sac_handled",
-              "value": "false"
-            },
-            {
-              "key": "supported_cities",
-              "value": "BOGOTA,MEDELLIN,CALI,BARRANQUILLA,BUCARAMANGA,PEREIRA,IBAGUE,BOYACA,VILLAVICENCIO,CARTAGENA,SANTA MARTA,CHIA,COTA,CAJICA,PALMIRA,JAMUNDI"
             }
           ],
           "startPersistState": true
@@ -281,137 +217,377 @@
       "height": 66,
       "selected": false,
       "positionAbsolute": {
-        "x": -268.5,
-        "y": 41
+        "x": -424.4019104583109,
+        "y": -84.61239642641056
       },
       "dragging": false
     },
     {
-      "id": "conditionAgentAgentflow_0",
+      "id": "llmAgentflow_0",
       "position": {
-        "x": -24.5,
-        "y": 12.75
+        "x": -206.00106209600418,
+        "y": -83.15579941449941
       },
       "data": {
-        "id": "conditionAgentAgentflow_0",
-        "label": "Intent_Detector",
-        "version": 1.1,
-        "name": "conditionAgentAgentflow",
-        "type": "ConditionAgent",
-        "color": "#ff8fab",
+        "id": "llmAgentflow_0",
+        "label": "Supervisor",
+        "version": 1,
+        "name": "llmAgentflow",
+        "type": "LLM",
+        "color": "#64B5F6",
         "baseClasses": [
-          "ConditionAgent"
+          "LLM"
         ],
         "category": "Agent Flows",
-        "description": "Utilize an agent to split flows based on dynamic conditions",
+        "description": "Large language models to analyze user-provided inputs and generate responses",
         "inputParams": [
           {
             "label": "Model",
-            "name": "conditionAgentModel",
+            "name": "llmModel",
             "type": "asyncOptions",
             "loadMethod": "listModels",
             "loadConfig": true,
-            "id": "conditionAgentAgentflow_0-input-conditionAgentModel-asyncOptions",
+            "id": "llmAgentflow_0-input-llmModel-asyncOptions",
             "display": true
           },
           {
-            "label": "Instructions",
-            "name": "conditionAgentInstructions",
-            "type": "string",
-            "description": "A general instructions of what the condition agent should do",
-            "rows": 4,
-            "acceptVariable": true,
-            "placeholder": "Determine if the user is interested in learning about AI",
-            "id": "conditionAgentAgentflow_0-input-conditionAgentInstructions-string",
-            "display": true
-          },
-          {
-            "label": "Input",
-            "name": "conditionAgentInput",
-            "type": "string",
-            "description": "Input to be used for the condition agent",
-            "rows": 4,
-            "acceptVariable": true,
-            "default": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"question\" data-label=\"question\">{{ question }}</span> </p>",
-            "id": "conditionAgentAgentflow_0-input-conditionAgentInput-string",
-            "display": true
-          },
-          {
-            "label": "Scenarios",
-            "name": "conditionAgentScenarios",
-            "description": "Define the scenarios that will be used as the conditions to split the flow",
+            "label": "Messages",
+            "name": "llmMessages",
             "type": "array",
+            "optional": true,
+            "acceptVariable": true,
             "array": [
               {
-                "label": "Scenario",
-                "name": "scenario",
-                "type": "string",
-                "placeholder": "User is asking for a pizza"
-              }
-            ],
-            "default": [
-              {
-                "scenario": ""
+                "label": "Role",
+                "name": "role",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "System",
+                    "name": "system"
+                  },
+                  {
+                    "label": "Assistant",
+                    "name": "assistant"
+                  },
+                  {
+                    "label": "Developer",
+                    "name": "developer"
+                  },
+                  {
+                    "label": "User",
+                    "name": "user"
+                  }
+                ]
               },
               {
-                "scenario": ""
+                "label": "Content",
+                "name": "content",
+                "type": "string",
+                "acceptVariable": true,
+                "generateInstruction": true,
+                "rows": 4
               }
             ],
-            "id": "conditionAgentAgentflow_0-input-conditionAgentScenarios-array",
+            "id": "llmAgentflow_0-input-llmMessages-array",
             "display": true
           },
           {
-            "label": "Override System Prompt",
-            "name": "conditionAgentOverrideSystemPrompt",
+            "label": "Enable Memory",
+            "name": "llmEnableMemory",
             "type": "boolean",
-            "description": "Override initial system prompt for Condition Agent",
+            "description": "Enable memory for the conversation thread",
+            "default": true,
             "optional": true,
-            "id": "conditionAgentAgentflow_0-input-conditionAgentOverrideSystemPrompt-boolean",
+            "id": "llmAgentflow_0-input-llmEnableMemory-boolean",
             "display": true
           },
           {
-            "label": "Node System Prompt",
-            "name": "conditionAgentSystemPrompt",
+            "label": "Memory Type",
+            "name": "llmMemoryType",
+            "type": "options",
+            "options": [
+              {
+                "label": "All Messages",
+                "name": "allMessages",
+                "description": "Retrieve all messages from the conversation"
+              },
+              {
+                "label": "Window Size",
+                "name": "windowSize",
+                "description": "Uses a fixed window size to surface the last N messages"
+              },
+              {
+                "label": "Conversation Summary",
+                "name": "conversationSummary",
+                "description": "Summarizes the whole conversation"
+              },
+              {
+                "label": "Conversation Summary Buffer",
+                "name": "conversationSummaryBuffer",
+                "description": "Summarize conversations once token limit is reached. Default to 2000"
+              }
+            ],
+            "optional": true,
+            "default": "allMessages",
+            "show": {
+              "llmEnableMemory": true
+            },
+            "id": "llmAgentflow_0-input-llmMemoryType-options",
+            "display": true
+          },
+          {
+            "label": "Window Size",
+            "name": "llmMemoryWindowSize",
+            "type": "number",
+            "default": "20",
+            "description": "Uses a fixed window size to surface the last N messages",
+            "show": {
+              "llmMemoryType": "windowSize"
+            },
+            "id": "llmAgentflow_0-input-llmMemoryWindowSize-number",
+            "display": false
+          },
+          {
+            "label": "Max Token Limit",
+            "name": "llmMemoryMaxTokenLimit",
+            "type": "number",
+            "default": "2000",
+            "description": "Summarize conversations once token limit is reached. Default to 2000",
+            "show": {
+              "llmMemoryType": "conversationSummaryBuffer"
+            },
+            "id": "llmAgentflow_0-input-llmMemoryMaxTokenLimit-number",
+            "display": false
+          },
+          {
+            "label": "Input Message",
+            "name": "llmUserMessage",
             "type": "string",
+            "description": "Add an input message as user message at the end of the conversation",
             "rows": 4,
             "optional": true,
             "acceptVariable": true,
-            "default": "<p>You are part of a multi-agent system designed to make agent coordination and execution easy. Your task is to analyze the given input and select one matching scenario from a provided set of scenarios.</p>\n    <ul>\n        <li><strong>Input</strong>: A string representing the user's query, message or data.</li>\n        <li><strong>Scenarios</strong>: A list of predefined scenarios that relate to the input.</li>\n        <li><strong>Instruction</strong>: Determine which of the provided scenarios is the best fit for the input.</li>\n    </ul>\n    <h2>Steps</h2>\n    <ol>\n        <li><strong>Read the input string</strong> and the list of scenarios.</li>\n        <li><strong>Analyze the content of the input</strong> to identify its main topic or intention.</li>\n        <li><strong>Compare the input with each scenario</strong>: Evaluate how well the input's topic or intention aligns with each of the provided scenarios and select the one that is the best fit.</li>\n        <li><strong>Output the result</strong>: Return the selected scenario in the specified JSON format.</li>\n    </ol>\n    <h2>Output Format</h2>\n    <p>Output should be a JSON object that names the selected scenario, like this: <code>{\"output\": \"<selected_scenario_name>\"}</code>. No explanation is needed.</p>\n    <h2>Examples</h2>\n    <ol>\n       <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"Hello\", \"scenarios\": [\"user is asking about AI\", \"user is not asking about AI\"], \"instruction\": \"Your task is to check if the user is asking about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is not asking about AI\"}</code></p>\n        </li>\n        <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"What is AIGC?\", \"scenarios\": [\"user is asking about AI\", \"user is asking about the weather\"], \"instruction\": \"Your task is to check and see if the user is asking a topic about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is asking about AI\"}</code></p>\n        </li>\n        <li>\n            <p><strong>Input</strong>: <code>{\"input\": \"Can you explain deep learning?\", \"scenarios\": [\"user is interested in AI topics\", \"user wants to order food\"], \"instruction\": \"Determine if the user is interested in learning about AI.\"}</code></p>\n            <p><strong>Output</strong>: <code>{\"output\": \"user is interested in AI topics\"}</code></p>\n        </li>\n    </ol>\n    <h2>Note</h2>\n    <ul>\n        <li>Ensure that the input scenarios align well with potential user queries for accurate matching.</li>\n        <li>DO NOT include anything other than the JSON in your response.</li>\n    </ul>",
-            "description": "Expert use only. Modifying this can significantly alter agent behavior. Leave default if unsure",
             "show": {
-              "conditionAgentOverrideSystemPrompt": true
+              "llmEnableMemory": true
             },
-            "id": "conditionAgentAgentflow_0-input-conditionAgentSystemPrompt-string",
-            "display": false
+            "id": "llmAgentflow_0-input-llmUserMessage-string",
+            "display": true
+          },
+          {
+            "label": "Return Response As",
+            "name": "llmReturnResponseAs",
+            "type": "options",
+            "options": [
+              {
+                "label": "User Message",
+                "name": "userMessage"
+              },
+              {
+                "label": "Assistant Message",
+                "name": "assistantMessage"
+              }
+            ],
+            "default": "userMessage",
+            "id": "llmAgentflow_0-input-llmReturnResponseAs-options",
+            "display": true
+          },
+          {
+            "label": "JSON Structured Output",
+            "name": "llmStructuredOutput",
+            "description": "Instruct the LLM to give output in a JSON structured schema",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Key",
+                "name": "key",
+                "type": "string"
+              },
+              {
+                "label": "Type",
+                "name": "type",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "String",
+                    "name": "string"
+                  },
+                  {
+                    "label": "String Array",
+                    "name": "stringArray"
+                  },
+                  {
+                    "label": "Number",
+                    "name": "number"
+                  },
+                  {
+                    "label": "Boolean",
+                    "name": "boolean"
+                  },
+                  {
+                    "label": "Enum",
+                    "name": "enum"
+                  },
+                  {
+                    "label": "JSON Array",
+                    "name": "jsonArray"
+                  }
+                ]
+              },
+              {
+                "label": "Enum Values",
+                "name": "enumValues",
+                "type": "string",
+                "placeholder": "value1, value2, value3",
+                "description": "Enum values. Separated by comma",
+                "optional": true,
+                "show": {
+                  "llmStructuredOutput[$index].type": "enum"
+                }
+              },
+              {
+                "label": "JSON Schema",
+                "name": "jsonSchema",
+                "type": "code",
+                "placeholder": "{\n    \"answer\": {\n        \"type\": \"string\",\n        \"description\": \"Value of the answer\"\n    },\n    \"reason\": {\n        \"type\": \"string\",\n        \"description\": \"Reason for the answer\"\n    },\n    \"optional\": {\n        \"type\": \"boolean\"\n    },\n    \"count\": {\n        \"type\": \"number\"\n    },\n    \"children\": {\n        \"type\": \"array\",\n        \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"value\": {\n                    \"type\": \"string\",\n                    \"description\": \"Value of the children's answer\"\n                }\n            }\n        }\n    }\n}",
+                "description": "JSON schema for the structured output",
+                "optional": true,
+                "show": {
+                  "llmStructuredOutput[$index].type": "jsonArray"
+                }
+              },
+              {
+                "label": "Description",
+                "name": "description",
+                "type": "string",
+                "placeholder": "Description of the key"
+              }
+            ],
+            "id": "llmAgentflow_0-input-llmStructuredOutput-array",
+            "display": true
+          },
+          {
+            "label": "Update Flow State",
+            "name": "llmUpdateState",
+            "description": "Update runtime state during the execution of the workflow",
+            "type": "array",
+            "optional": true,
+            "acceptVariable": true,
+            "array": [
+              {
+                "label": "Key",
+                "name": "key",
+                "type": "asyncOptions",
+                "loadMethod": "listRuntimeStateKeys",
+                "freeSolo": true
+              },
+              {
+                "label": "Value",
+                "name": "value",
+                "type": "string",
+                "acceptVariable": true,
+                "acceptNodeOutputAsVariable": true
+              }
+            ],
+            "id": "llmAgentflow_0-input-llmUpdateState-array",
+            "display": true
           }
         ],
         "inputAnchors": [],
         "inputs": {
-          "conditionAgentModel": "chatOpenAI",
-          "conditionAgentInstructions": "<p>  Eres un clasificador de intenciones para Casalimpia. Analiza el mensaje del usuario y determina la intención principal según estas prioridades:</p><p>  1. SAC (MÁXIMA PRIORIDAD): Quejas, reclamos, problemas, reembolsos, incidentes</p><p>  2. PRICE: Consultas de precios, costos, tarifas</p><p>  3. RESCHEDULE: Reagendar, cambiar fecha, cambiar experta</p><p>  4. SERVICE: Contratar servicios, servicios nuevos (DEFAULT)</p><p>  Responde con el texto exacto del escenario correspondiente.</p>",
-          "conditionAgentInput": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"question\" data-label=\"question\">{{ question }}</span> </p>",
-          "conditionAgentScenarios": [
+          "llmModel": "chatOpenAI",
+          "llmMessages": [
             {
-              "scenario": "Usuario saluda o dice hola sin intención específica"
-            },
-            {
-              "scenario": "Usuario tiene queja, reclamo, problema o solicita reembolso"
-            },
-            {
-              "scenario": "Usuario pregunta por precios, costos o tarifas"
-            },
-            {
-              "scenario": "Usuario quiere reagendar o cambiar servicio existente"
-            },
-            {
-              "scenario": "Usuario quiere contratar servicio nuevo o cualquier otra consulta"
+              "role": "system",
+              "content": "<pre><code class=\"language-yaml\">You are a supervisor tasked with managing a conversation between the following workers:\n\n  - GREETING: Handles initial greetings and presents service options\n  - SAC: Handles complaints, claims, and customer service issues (HIGHEST PRIORITY)\n  - PRICE: Provides pricing information and service costs\n  - RESCHEDULE: Manages rescheduling of existing services\n  - SERVICE: Manages service booking and purchase process\n\nGiven the following user request, respond with the worker to act next.\n\nEach worker will perform a task and respond with their results and status.\n\nWhen finished, respond with FINISH.\n\nSelect strategically to minimize the number of steps taken.</code></pre>"
             }
           ],
-          "conditionAgentOverrideSystemPrompt": true,
-          "conditionAgentSystemPrompt": "<p>Eres un clasificador de intenciones especializado para Casalimpia. Tu tarea es analizar el mensaje del usuario y seleccionar el escenario que mejor coincida con su intención.</p><p>Analiza la intención principal y responde EXACTAMENTE con el texto del escenario correspondiente según estas prioridades:</p><ol><li><strong>GREETING (PRIMERA VEZ)</strong>: Solo saludos como 'hola', 'buenos días', 'hi' sin solicitud específica</li><li><strong>SAC (MÁXIMA PRIORIDAD)</strong>: Quejas, reclamos, problemas, reembolsos, incidentes</li><li><strong>PRICE</strong>: Consultas sobre precios, costos, tarifas</li><li><strong>RESCHEDULE</strong>: Reagendar, cambiar fecha, cambiar experta de servicios existentes</li><li><strong>SERVICE</strong>: Contratar servicios nuevos (DEFAULT)</li></ol><p>Formato de salida: <code>{\"output\": \"texto_exacto_del_escenario\"}</code></p><p>NO incluyas explicaciones, solo el JSON con el texto exacto del escenario.</p>",
-          "conditionAgentModelConfig": {
+          "llmEnableMemory": true,
+          "llmMemoryType": "allMessages",
+          "llmUserMessage": "<p>Given the conversation above, who should act next? Or should we FINISH? Select one of: GREETING, SAC, PRICE, RESCHEDULE, SERVICE</p>",
+          "llmReturnResponseAs": "userMessage",
+          "llmStructuredOutput": [
+            {
+              "key": "next",
+              "type": "enum",
+              "enumValues": "GREETING, SAC, PRICE, RESCHEDULE, SERVICE",
+              "jsonSchema": "",
+              "description": "Next agent based on current context and conversation state"
+            },
+            {
+              "key": "instructions",
+              "type": "string",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "The specific instructions of the sub-task the next worker should accomplish."
+            },
+            {
+              "key": "reasoning",
+              "type": "string",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "Contextual reasoning explaining why this agent was selected based on current state and message"
+            },
+            {
+              "key": "city",
+              "type": "string",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "The most recent city of interest of the user for the services for pricing or buy services"
+            },
+            {
+              "key": "rescheduleAppointmentId",
+              "type": "string",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "The `idTransaccion` selected from the user when is rescheduling a service"
+            },
+            {
+              "key": "rescheduleAppointmentNewDate",
+              "type": "string",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "The new date requested by the user if he wants to change the selected appointment date"
+            },
+            {
+              "key": "rescheduleAppointmentNewExpertId",
+              "type": "number",
+              "enumValues": "",
+              "jsonSchema": "",
+              "description": "The `cedula` of the new selected expert requested by the user when rescheduling a service"
+            }
+          ],
+          "llmUpdateState": [
+            {
+              "key": "next",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.next\" data-label=\"output.next\">{{ output.next }}</span> </p>"
+            },
+            {
+              "key": "instruction",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.instructions\" data-label=\"output.instructions\">{{ output.instructions }}</span> </p>"
+            },
+            {
+              "key": "selectedCity",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.city\" data-label=\"output.city\">{{ output.city }}</span> </p>"
+            },
+            {
+              "key": "SelectedRescheduleAppointmentId",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.rescheduleAppointmentId\" data-label=\"output.rescheduleAppointmentId\">{{ output.rescheduleAppointmentId }}</span> </p>"
+            },
+            {
+              "key": "SelectedRescheduleAppointmentNewDate",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.rescheduleAppointmentNewDate\" data-label=\"output.rescheduleAppointmentNewDate\">{{ output.rescheduleAppointmentNewDate }}</span> </p>"
+            },
+            {
+              "key": "SelectedRescheduleAppointmentNewExepertId",
+              "value": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"output.rescheduleAppointmentNewExpertId\" data-label=\"output.rescheduleAppointmentNewExpertId\">{{ output.rescheduleAppointmentNewExpertId }}</span> </p>"
+            }
+          ],
+          "llmModelConfig": {
             "cache": "",
-            "modelName": "gpt-4.1-nano",
+            "modelName": "gpt-4.1-mini",
             "temperature": 0.1,
             "streaming": true,
             "maxTokens": "",
@@ -426,48 +602,343 @@
             "baseOptions": "",
             "allowImageUploads": "",
             "reasoningEffort": "medium",
-            "conditionAgentModel": "chatOpenAI"
+            "llmModel": "chatOpenAI"
           }
         },
         "outputAnchors": [
           {
-            "id": "conditionAgentAgentflow_0-output-0",
-            "label": "Greeting Flow",
-            "name": "conditionAgentAgentflow"
+            "id": "llmAgentflow_0-output-llmAgentflow",
+            "label": "LLM",
+            "name": "llmAgentflow"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "type": "agentFlow",
+      "width": 175,
+      "height": 72,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -206.00106209600418,
+        "y": -83.15579941449941
+      },
+      "dragging": false
+    },
+    {
+      "id": "conditionAgentflow_0",
+      "position": {
+        "x": -3.848472844743,
+        "y": -127.44531344639984
+      },
+      "data": {
+        "id": "conditionAgentflow_0",
+        "label": "Check Next Worker",
+        "version": 1,
+        "name": "conditionAgentflow",
+        "type": "Condition",
+        "color": "#FFB938",
+        "baseClasses": [
+          "Condition"
+        ],
+        "category": "Agent Flows",
+        "description": "Split flows based on If Else conditions",
+        "inputParams": [
+          {
+            "label": "Conditions",
+            "name": "conditions",
+            "type": "array",
+            "description": "Values to compare",
+            "acceptVariable": true,
+            "default": [
+              {
+                "type": "string",
+                "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
+                "operation": "equal",
+                "value2": "<p>GREETING</p>"
+              }
+            ],
+            "array": [
+              {
+                "label": "Type",
+                "name": "type",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "String",
+                    "name": "string"
+                  },
+                  {
+                    "label": "Number",
+                    "name": "number"
+                  },
+                  {
+                    "label": "Boolean",
+                    "name": "boolean"
+                  }
+                ],
+                "default": "string"
+              },
+              {
+                "label": "Value 1",
+                "name": "value1",
+                "type": "string",
+                "default": "",
+                "description": "First value to be compared with",
+                "acceptVariable": true,
+                "show": {
+                  "conditions[$index].type": "string"
+                }
+              },
+              {
+                "label": "Operation",
+                "name": "operation",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "Contains",
+                    "name": "contains"
+                  },
+                  {
+                    "label": "Ends With",
+                    "name": "endsWith"
+                  },
+                  {
+                    "label": "Equal",
+                    "name": "equal"
+                  },
+                  {
+                    "label": "Not Contains",
+                    "name": "notContains"
+                  },
+                  {
+                    "label": "Not Equal",
+                    "name": "notEqual"
+                  },
+                  {
+                    "label": "Regex",
+                    "name": "regex"
+                  },
+                  {
+                    "label": "Starts With",
+                    "name": "startsWith"
+                  },
+                  {
+                    "label": "Is Empty",
+                    "name": "isEmpty"
+                  },
+                  {
+                    "label": "Not Empty",
+                    "name": "notEmpty"
+                  }
+                ],
+                "default": "equal",
+                "description": "Type of operation",
+                "show": {
+                  "conditions[$index].type": "string"
+                }
+              },
+              {
+                "label": "Value 2",
+                "name": "value2",
+                "type": "string",
+                "default": "",
+                "description": "Second value to be compared with",
+                "acceptVariable": true,
+                "show": {
+                  "conditions[$index].type": "string"
+                },
+                "hide": {
+                  "conditions[$index].operation": [
+                    "isEmpty",
+                    "notEmpty"
+                  ]
+                }
+              },
+              {
+                "label": "Value 1",
+                "name": "value1",
+                "type": "number",
+                "default": "",
+                "description": "First value to be compared with",
+                "acceptVariable": true,
+                "show": {
+                  "conditions[$index].type": "number"
+                }
+              },
+              {
+                "label": "Operation",
+                "name": "operation",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "Smaller",
+                    "name": "smaller"
+                  },
+                  {
+                    "label": "Smaller Equal",
+                    "name": "smallerEqual"
+                  },
+                  {
+                    "label": "Equal",
+                    "name": "equal"
+                  },
+                  {
+                    "label": "Not Equal",
+                    "name": "notEqual"
+                  },
+                  {
+                    "label": "Larger",
+                    "name": "larger"
+                  },
+                  {
+                    "label": "Larger Equal",
+                    "name": "largerEqual"
+                  },
+                  {
+                    "label": "Is Empty",
+                    "name": "isEmpty"
+                  },
+                  {
+                    "label": "Not Empty",
+                    "name": "notEmpty"
+                  }
+                ],
+                "default": "equal",
+                "description": "Type of operation",
+                "show": {
+                  "conditions[$index].type": "number"
+                }
+              },
+              {
+                "label": "Value 2",
+                "name": "value2",
+                "type": "number",
+                "default": 0,
+                "description": "Second value to be compared with",
+                "acceptVariable": true,
+                "show": {
+                  "conditions[$index].type": "number"
+                }
+              },
+              {
+                "label": "Value 1",
+                "name": "value1",
+                "type": "boolean",
+                "default": false,
+                "description": "First value to be compared with",
+                "show": {
+                  "conditions[$index].type": "boolean"
+                }
+              },
+              {
+                "label": "Operation",
+                "name": "operation",
+                "type": "options",
+                "options": [
+                  {
+                    "label": "Equal",
+                    "name": "equal"
+                  },
+                  {
+                    "label": "Not Equal",
+                    "name": "notEqual"
+                  }
+                ],
+                "default": "equal",
+                "description": "Type of operation",
+                "show": {
+                  "conditions[$index].type": "boolean"
+                }
+              },
+              {
+                "label": "Value 2",
+                "name": "value2",
+                "type": "boolean",
+                "default": false,
+                "description": "Second value to be compared with",
+                "show": {
+                  "conditions[$index].type": "boolean"
+                }
+              }
+            ],
+            "id": "conditionAgentflow_0-input-conditions-array",
+            "display": true
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "conditions": [
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
+              "operation": "equal",
+              "value2": "<p>GREETING</p>"
+            },
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
+              "operation": "equal",
+              "value2": "<p>SAC</p>"
+            },
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
+              "operation": "equal",
+              "value2": "<p>PRICE</p>"
+            },
+            {
+              "type": "string",
+              "value1": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.next\" data-label=\"$flow.state.next\">{{ $flow.state.next }}</span></p>",
+              "operation": "equal",
+              "value2": "<p>RESCHEDULE</p>"
+            }
+          ]
+        },
+        "outputAnchors": [
+          {
+            "id": "conditionAgentflow_0-output-0",
+            "label": 0,
+            "name": 0,
+            "description": "Condition 0"
           },
           {
-            "id": "conditionAgentAgentflow_0-output-1",
-            "label": "SAC Flow",
-            "name": "conditionAgentAgentflow"
+            "id": "conditionAgentflow_0-output-1",
+            "label": 1,
+            "name": 1,
+            "description": "Condition 1"
           },
           {
-            "id": "conditionAgentAgentflow_0-output-2",
-            "label": "Price Flow",
-            "name": "conditionAgentAgentflow"
+            "id": "conditionAgentflow_0-output-2",
+            "label": 2,
+            "name": 2,
+            "description": "Condition 2"
           },
           {
-            "id": "conditionAgentAgentflow_0-output-3",
-            "label": "Reschedule Flow",
-            "name": "conditionAgentAgentflow"
+            "id": "conditionAgentflow_0-output-3",
+            "label": 3,
+            "name": 3,
+            "description": "Condition 3"
           },
           {
-            "id": "conditionAgentAgentflow_0-output-4",
-            "label": "Service Flow",
-            "name": "conditionAgentAgentflow"
+            "id": "conditionAgentflow_0-output-4",
+            "label": 4,
+            "name": 4,
+            "description": "Else"
           }
         ],
         "outputs": {
-          "conditionAgentAgentflow": ""
+          "conditionAgentflow": ""
         },
         "selected": false
       },
       "type": "agentFlow",
-      "width": 179,
+      "width": 198,
       "height": 140,
       "selected": false,
       "positionAbsolute": {
-        "x": -24.5,
-        "y": 12.75
+        "x": -3.848472844743,
+        "y": -127.44531344639984
       },
       "dragging": false
     },
@@ -782,7 +1253,7 @@
           "agentMemoryType": "allMessages",
           "agentMemoryWindowSize": "20",
           "agentMemoryMaxTokenLimit": "2000",
-          "agentUserMessage": "{{ question }}",
+          "agentUserMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.instruction\" data-label=\"$flow.state.instruction\">{{ $flow.state.instruction }}</span> </p>",
           "agentReturnResponseAs": "userMessage",
           "agentUpdateState": [
             {
@@ -841,7 +1312,7 @@
     {
       "id": "agentAgentflow_1",
       "position": {
-        "x": 248.95852373231867,
+        "x": 246.86754717102718,
         "y": -98.88743428185536
       },
       "data": {
@@ -1147,7 +1618,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "67aaa7b6-152f-439b-b4b9-41ef63fd3eb6",
+                "selectedTool": "70ca6e25-8bb2-4a43-b85e-267db085bba5",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1161,11 +1632,9 @@
           "agentKnowledgeVSEmbeddings": "",
           "agentEnableMemory": true,
           "agentMemoryType": "allMessages",
-          "agentMemoryWindowSize": "20",
-          "agentMemoryMaxTokenLimit": "2000",
-          "agentUserMessage": "{{ question }}",
+          "agentUserMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.instruction\" data-label=\"$flow.state.instruction\">{{ $flow.state.instruction }}</span> </p>",
           "agentReturnResponseAs": "userMessage",
-          "agentUpdateState": "",
+          "agentUpdateState": [],
           "agentModelConfig": {
             "cache": "",
             "modelName": "gpt-4.1-nano",
@@ -1202,7 +1671,7 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 248.95852373231867,
+        "x": 246.86754717102718,
         "y": -98.88743428185536
       }
     },
@@ -1515,7 +1984,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "78f087ec-310e-4b7f-b317-653c97eb0a36",
+                "selectedTool": "74ccc5f4-0b56-493b-9aaa-6e05fb142848",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1528,7 +1997,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "67aaa7b6-152f-439b-b4b9-41ef63fd3eb6",
+                "selectedTool": "1375918c-a95a-4ebe-853e-40e3c755e7d2",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1541,7 +2010,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "78b86203-3f83-4d85-abce-83f25ad099b2",
+                "selectedTool": "70ca6e25-8bb2-4a43-b85e-267db085bba5",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1554,7 +2023,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "6f19af73-f5d3-4fda-8c9b-38477c019256",
+                "selectedTool": "ac19123a-4c74-400c-a7f2-92f97708f78e",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1570,7 +2039,7 @@
           "agentMemoryType": "allMessages",
           "agentMemoryWindowSize": "20",
           "agentMemoryMaxTokenLimit": "2000",
-          "agentUserMessage": "{{ question }}",
+          "agentUserMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.instruction\" data-label=\"$flow.state.instruction\">{{ $flow.state.instruction }}</span> </p>",
           "agentReturnResponseAs": "userMessage",
           "agentUpdateState": "",
           "agentModelConfig": {
@@ -1616,8 +2085,8 @@
     {
       "id": "agentAgentflow_3",
       "position": {
-        "x": 527.5551849946265,
-        "y": 161.99657281826373
+        "x": 521.3191085762941,
+        "y": 192.28608685016417
       },
       "data": {
         "id": "agentAgentflow_3",
@@ -1922,7 +2391,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "46ac5206-e8bd-464a-a929-b7592aad0e8a",
+                "selectedTool": "1375918c-a95a-4ebe-853e-40e3c755e7d2",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -1935,7 +2404,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "78b86203-3f83-4d85-abce-83f25ad099b2",
+                "selectedTool": "70ca6e25-8bb2-4a43-b85e-267db085bba5",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -2003,8 +2472,8 @@
       "selected": false,
       "dragging": false,
       "positionAbsolute": {
-        "x": 527.5551849946265,
-        "y": 161.99657281826373
+        "x": 521.3191085762941,
+        "y": 192.28608685016417
       }
     },
     {
@@ -2316,7 +2785,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "ed0c7fb8-696f-48cc-98fc-8c11a63ad35d",
+                "selectedTool": "2d13997a-acc4-4437-aaf1-fcdec8aa4f42",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -2329,7 +2798,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "46ac5206-e8bd-464a-a929-b7592aad0e8a",
+                "selectedTool": "109376a3-50c3-4716-b0b3-83164fd3a85c",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -2342,7 +2811,7 @@
               "agentSelectedTool": "customTool",
               "agentSelectedToolRequiresHumanInput": false,
               "agentSelectedToolConfig": {
-                "selectedTool": "1604b4c6-443b-49ca-bec1-d3ed0275bdd7",
+                "selectedTool": "ff299768-ca2c-43e8-bab5-739a4eec7294",
                 "returnDirect": "",
                 "customToolName": "",
                 "customToolDesc": "",
@@ -2358,22 +2827,9 @@
           "agentMemoryType": "allMessages",
           "agentMemoryWindowSize": "20",
           "agentMemoryMaxTokenLimit": "2000",
-          "agentUserMessage": "{{ question }}",
+          "agentUserMessage": "<p><span class=\"variable\" data-type=\"mention\" data-id=\"$flow.state.instruction\" data-label=\"$flow.state.instruction\">{{ $flow.state.instruction }}</span> </p>",
           "agentReturnResponseAs": "userMessage",
-          "agentUpdateState": [
-            {
-              "key": "user_cedula",
-              "value": "{{ extracted_cedula }}"
-            },
-            {
-              "key": "flow_type",
-              "value": "reschedule"
-            },
-            {
-              "key": "current_step",
-              "value": "{{ current_reschedule_step }}"
-            }
-          ],
+          "agentUpdateState": [],
           "agentModelConfig": {
             "cache": "",
             "modelName": "gpt-4.1-nano",
@@ -2472,85 +2928,98 @@
     {
       "source": "startAgentflow_0",
       "sourceHandle": "startAgentflow_0-output-startAgentflow",
-      "target": "conditionAgentAgentflow_0",
-      "targetHandle": "conditionAgentAgentflow_0",
+      "target": "llmAgentflow_0",
+      "targetHandle": "llmAgentflow_0",
       "data": {
         "sourceColor": "#7EE787",
-        "targetColor": "#ff8fab",
+        "targetColor": "#64B5F6",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "startAgentflow_0-startAgentflow_0-output-startAgentflow-conditionAgentAgentflow_0-conditionAgentAgentflow_0"
+      "id": "startAgentflow_0-startAgentflow_0-output-startAgentflow-llmAgentflow_0-llmAgentflow_0"
     },
     {
-      "source": "conditionAgentAgentflow_0",
-      "sourceHandle": "conditionAgentAgentflow_0-output-0",
+      "source": "llmAgentflow_0",
+      "sourceHandle": "llmAgentflow_0-output-llmAgentflow",
+      "target": "conditionAgentflow_0",
+      "targetHandle": "conditionAgentflow_0",
+      "data": {
+        "sourceColor": "#64B5F6",
+        "targetColor": "#FFB938",
+        "isHumanInput": false
+      },
+      "type": "agentFlow",
+      "id": "llmAgentflow_0-llmAgentflow_0-output-llmAgentflow-conditionAgentflow_0-conditionAgentflow_0"
+    },
+    {
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-0",
       "target": "directReplyAgentflow_0",
       "targetHandle": "directReplyAgentflow_0",
       "data": {
-        "sourceColor": "#ff8fab",
+        "sourceColor": "#FFB938",
         "targetColor": "#90EE90",
         "edgeLabel": "0",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "conditionAgentAgentflow_0-conditionAgentAgentflow_0-output-0-directReplyAgentflow_0-directReplyAgentflow_0"
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-0-directReplyAgentflow_0-directReplyAgentflow_0"
     },
     {
-      "source": "conditionAgentAgentflow_0",
-      "sourceHandle": "conditionAgentAgentflow_0-output-1",
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-1",
       "target": "agentAgentflow_0",
       "targetHandle": "agentAgentflow_0",
       "data": {
-        "sourceColor": "#ff8fab",
+        "sourceColor": "#FFB938",
         "targetColor": "#4DD0E1",
         "edgeLabel": "1",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "conditionAgentAgentflow_0-conditionAgentAgentflow_0-output-1-agentAgentflow_0-agentAgentflow_0"
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-1-agentAgentflow_0-agentAgentflow_0"
     },
     {
-      "source": "conditionAgentAgentflow_0",
-      "sourceHandle": "conditionAgentAgentflow_0-output-2",
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-2",
       "target": "agentAgentflow_1",
       "targetHandle": "agentAgentflow_1",
       "data": {
-        "sourceColor": "#ff8fab",
+        "sourceColor": "#FFB938",
         "targetColor": "#4DD0E1",
         "edgeLabel": "2",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "conditionAgentAgentflow_0-conditionAgentAgentflow_0-output-2-agentAgentflow_1-agentAgentflow_1"
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-2-agentAgentflow_1-agentAgentflow_1"
     },
     {
-      "source": "conditionAgentAgentflow_0",
-      "sourceHandle": "conditionAgentAgentflow_0-output-3",
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-3",
       "target": "rescheduleAgentAgentflow_0",
       "targetHandle": "rescheduleAgentAgentflow_0",
       "data": {
-        "sourceColor": "#ff8fab",
+        "sourceColor": "#FFB938",
         "targetColor": "#4DD0E1",
         "edgeLabel": "3",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "conditionAgentAgentflow_0-conditionAgentAgentflow_0-output-3-rescheduleAgentAgentflow_0-rescheduleAgentAgentflow_0"
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-3-rescheduleAgentAgentflow_0-rescheduleAgentAgentflow_0"
     },
     {
-      "source": "conditionAgentAgentflow_0",
-      "sourceHandle": "conditionAgentAgentflow_0-output-4",
+      "source": "conditionAgentflow_0",
+      "sourceHandle": "conditionAgentflow_0-output-4",
       "target": "agentAgentflow_2",
       "targetHandle": "agentAgentflow_2",
       "data": {
-        "sourceColor": "#ff8fab",
+        "sourceColor": "#FFB938",
         "targetColor": "#4DD0E1",
         "edgeLabel": "4",
         "isHumanInput": false
       },
       "type": "agentFlow",
-      "id": "conditionAgentAgentflow_0-conditionAgentAgentflow_0-output-4-agentAgentflow_2-agentAgentflow_2"
+      "id": "conditionAgentflow_0-conditionAgentflow_0-output-4-agentAgentflow_2-agentAgentflow_2"
     },
     {
       "source": "agentAgentflow_2",
